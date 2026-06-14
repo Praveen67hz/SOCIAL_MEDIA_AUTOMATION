@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
+@import "tailwindcss";
+
+@theme {
+    --color-bg: #fafafa;
+    --color-text: #111111;
+    --font-sans: "Outfit", sans-serif;
+    --font-serif: "Urbanist", sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* Custom scrollbar - Indigo theme */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #4f46e5; /* Indigo */
+    border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #4338ca; /* Darker Indigo */
+}
+
+/* Smooth hover transitions */
+a, button, [role="button"] {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Selection color */
+::selection {
+    background-color: rgba(79, 70, 229, 0.2);
+    color: #0f172a;
+}
