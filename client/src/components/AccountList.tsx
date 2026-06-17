@@ -39,7 +39,7 @@ const AccountList = ({accounts, onDisconnect}: AccountListProps) => {
            return(
 
             <div key = {index} className="group bg-white border border-slate-200
-            rounded-2xl p-5 flex items-center gap-4 hover:border-slate-300
+            rounded-2xl p-5 flex items-center gap-4 hover:border-indigo-200 hover:shadow-md hover:shadow-indigo-50
             transition-all">
                <div>
                 <meta.icon className = "size-6 text-slate-500"/>
@@ -63,7 +63,7 @@ const AccountList = ({accounts, onDisconnect}: AccountListProps) => {
                </div>
                <button 
                onClick={()=>handleDisconnect(account._id)}
-               title = "Disconnected account"
+               title = "Disconnect account"
                className="ml-2 p-1.5 rounded-lg text-slate-300
                group-hover:text-red-500 transition-all">
                 <UnplugIcon className="size-4"/>
