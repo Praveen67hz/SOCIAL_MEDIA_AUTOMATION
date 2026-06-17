@@ -1,5 +1,5 @@
 import { ActivityIcon, CheckCheckIcon, ClockIcon, SendIcon, Share2Icon, TrendingUpIcon } from "lucide-react"
-import { act, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { dummyAccountsData, dummyActivityData, dummyPostsData } from "../assets/assets"
 
 const Dashboard = () => {

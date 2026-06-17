@@ -1,4 +1,4 @@
-import { act, useEffect, useState } from "react"
+import {  useEffect, useState } from "react"
 import { dummyGenerationData, PLATFORMS } from "../assets/assets";
 import { ArrowRightIcon, CalendarIcon, ClockIcon, HistoryIcon, Loader2Icon, TimerIcon, Wand2Icon, XIcon } from "lucide-react";
 
