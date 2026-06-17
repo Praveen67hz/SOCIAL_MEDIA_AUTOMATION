@@ -29,14 +29,11 @@ const Accounts = () => {
       },1000)
   }
 
-
-
   const handleDisconnect = async(accountId: string)=>{
      setAccounts(accounts.filter((a)=>a._id !== accountId))
   }
 
   const connectedIds = accounts.map((a)=>a.platform)
-
 
   return (
     <div className="space-y-8 max-w-4xl">
@@ -57,7 +54,7 @@ const Accounts = () => {
 
       <button
         onClick={() => setShowPlatformPicker(true)}
-        className="flex items-center gap-2 px-5 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-full"
+        className="flex items-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-full transition-all"
       >
         <PlusIcon className="w-5 h-5" />
         Connect Account
@@ -68,7 +65,6 @@ const Accounts = () => {
     {showPlatformPicker && <PlatformPickerModel connectedIds={connectedIds}
     connecting={connecting} onClose={()=>setShowPlatformPicker(false)}
     onConnect={handleConnect}/>}
-
 
     {/* Connected accounts list */}
     <AccountList

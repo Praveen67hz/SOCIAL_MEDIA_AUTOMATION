@@ -37,8 +37,6 @@ const Scheduler = () => {
       },1000)
   }
 
-
-
   return (
     <div className="flex flex-col lg:flex-row gap-6 h-full">
 
@@ -58,8 +56,8 @@ const Scheduler = () => {
                         return (
                           <button key={p.id} type="button" onClick={()=>togglePlatform(p.id)}
                           className={`flex items-center gap-1.5 p-3 rounded-md border
-                          transition-all duration-150 ${active ? "bg-red-50 border-red-300 text-red-500 scale-103"
-                            : "border-slate-200 text-slate-500 hover:border-slate-300"
+                          transition-all duration-150 ${active ? "bg-indigo-50 border-indigo-300 text-indigo-600 scale-103"
+                            : "border-slate-200 text-slate-500 hover:border-indigo-300 hover:text-indigo-600"
                            }`}>
                             <p.icon className="size-4.5"/>
                           </button>
@@ -75,7 +73,7 @@ const Scheduler = () => {
                   <textarea required rows = {5} placeholder="What you want to share today?" 
                   className="w-full px-5 py-4 bg-slate-50 border border-slate-200
                   rounded-2xl text-slate-900 text-sm placeholder-slate-400 
-                  outline-none resize-none" value ={content} onChange={(e)=>setContent(e.target.value)}>
+                  outline-none focus:border-indigo-300 transition-all resize-none" value ={content} onChange={(e)=>setContent(e.target.value)}>
                   </textarea>
                   <div className={`text-right text-xs mt-1 font-medium ${content.length > 
                     270 ? "text-red-500" :"text-slate-400"
@@ -106,9 +104,9 @@ const Scheduler = () => {
                      </div>
                   ) : (
                       <label className="flex items-center justify-center gap-2 p-5 py-10 border-2 border-dashed border-slate-200 
-                      rounded-xl cursor-pointer hover:border-red-300 
-                      hover:bg-red-50/30 transition-all group">
-                        <span className="text-sm text-slate-500 group-hover:text-red-600 
+                      rounded-xl cursor-pointer hover:border-indigo-300 
+                      hover:bg-indigo-50/30 transition-all group">
+                        <span className="text-sm text-slate-500 group-hover:text-indigo-600 
                         transition-colors">
                         Click to upload image or video
                         </span>
@@ -130,12 +128,12 @@ const Scheduler = () => {
                             required
                             className="w-full pl-10 pr-4 py-2.5 bg-slate-50 
                             border border-slate-200 rounded-lg 
-                            text-slate-900 text-sm outline-none"
+                            text-slate-900 text-sm outline-none focus:border-indigo-300 transition-all"
                             value={scheduledDate} onChange={(e)=>setScheduledDate(e.target.value)} />
                       </div>
                      </div>
                       <div>
-                      <label className="block text-xs text-slate-500 uppercase mb-2">Date</label>
+                      <label className="block text-xs text-slate-500 uppercase mb-2">Time</label>
                       <div className="relative">
                           <ClockIcon className="size-4 absolute left-3 top-1/2 -translate-y-1/2
                           text-slate-400 pointer-events-none"/>
@@ -144,7 +142,7 @@ const Scheduler = () => {
                             required
                             className="w-full pl-10 pr-4 py-2.5 bg-slate-50 
                             border border-slate-200 rounded-lg 
-                            text-slate-900 text-sm outline-none"
+                            text-slate-900 text-sm outline-none focus:border-indigo-300 transition-all"
                             value={scheduledTime} onChange={(e)=>setScheduledTime(e.target.value)} />
                       </div>
                      </div>
@@ -154,14 +152,13 @@ const Scheduler = () => {
                  <button
                     type="submit"
                     disabled={loading}
-                    className="w-full flex items-center justify-center gap-2 py-3.5 bg-red-500 hover:bg-red-600 transition-all text-white rounded-lg"
+                    className="w-full flex items-center justify-center gap-2 py-3.5 bg-indigo-500 hover:bg-indigo-600 transition-all text-white rounded-lg"
                   >
                   {loading ? (
                     <>
                     <div className="size-4 border-2 border-white border-t-transparent
-                    rounded-full animate-spin">
-                      Scheduling
-                    </div>
+                    rounded-full animate-spin"></div>
+                    <span>Scheduling...</span>
                     </>
                   ):(
                     <>
@@ -188,10 +185,10 @@ const Scheduler = () => {
             </div>
             <div className="max-h-72 overflow-y-auto divide-y divide-slate-50">
               {scheduled.length === 0 ? (
-                <div className="">No posts scheduled yet</div>
+                <div className="px-5 py-4 text-slate-400 text-sm">No posts scheduled yet</div>
               ):(
                 scheduled.map((post)=>(
-                    <div key = {post._id} className="px-5 py-4 hover:bg-slate-50/60
+                    <div key = {post._id} className="px-5 py-4 hover:bg-indigo-50/30
                     transition-colors">
                        <div className="flex items-center justify-between mb-2">
                         <div className="flex gap-1.5 items-center">
@@ -204,7 +201,7 @@ const Scheduler = () => {
                             {post.mediaType && <span className="text-xs bg-slate-100 text-slate-600
                             border border-slate-200 px-1.5 py-0.5 rounded-md font-semibold capitalize">{post.mediaType}
                             </span>}
-                            <span>{new Date(post.scheduledFor).toLocaleString()}</span>
+                            <span className="text-xs text-slate-500">{new Date(post.scheduledFor).toLocaleString()}</span>
                         </div>
                        </div>
                        <p className="text-sm text-slate-500 line-clamp-2 
@@ -226,10 +223,10 @@ const Scheduler = () => {
             </div>
             <div className="max-h-72 overflow-y-auto divide-y divide-slate-50">
               {published.length === 0 ? (
-                <div className="">No  published posts yet</div>
+                <div className="px-5 py-4 text-slate-400 text-sm">No published posts yet</div>
               ):(
                 published.map((post)=>(
-                    <div key = {post._id} className="px-5 py-4 hover:bg-slate-50/60
+                    <div key = {post._id} className="px-5 py-4 hover:bg-indigo-50/30
                     transition-colors">
                        <div className="flex items-center justify-between mb-2">
                         <div className="flex gap-1.5 items-center">
@@ -242,9 +239,9 @@ const Scheduler = () => {
                             {post.mediaType && <span className="text-xs bg-slate-100 text-slate-600
                             border border-slate-200 px-1.5 py-0.5 rounded-md font-semibold capitalize">{post.mediaType}
                             </span>}
-                            <span>{new Date(post.updatedAt).toLocaleString()}
+                            <span className="text-xs text-slate-500">{new Date(post.updatedAt).toLocaleString()}
                             </span>
-                            <span className="text-xs bg-emerlad-50 text-emerald-700
+                            <span className="text-xs bg-emerald-50 text-emerald-700
                             border border-emerald-100 px-2 py-0.5 rounded-full">Published</span>
                         </div>
                        </div>

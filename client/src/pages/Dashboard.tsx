@@ -54,7 +54,7 @@ const Dashboard = () => {
       <h2 className="text-2xl text-slate-900">
         Good Morning! 👋
       </h2>
-        <p className="text-slate-500 text-sm mt-0.5">Here's what's happening wiht your social accounts today. </p>
+        <p className="text-slate-500 text-sm mt-0.5">Here's what's happening with your social accounts today. </p>
       </div>
       {/* Stat cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -63,20 +63,20 @@ const Dashboard = () => {
             key={card.label}
             className="
               bg-white
-              hover:bg-red-50
+              hover:bg-indigo-50
               relative
               border
               border-slate-200
               rounded-2xl
               p-5
-              hover:border-red-200
+              hover:border-indigo-200
               transition-all
             "
           >
             <div className="flex items-center justify-between mb-4">
-              <div>{card.value}</div>
+              <div className="text-2xl font-bold text-slate-900">{card.value}</div>
 
-              <div className="text-xs absolute right-4 top-4 text-indigo-500 ie-center gap-1">
+              <div className="text-xs text-indigo-500 flex items-center gap-1">
                 <TrendingUpIcon className="size-3" />   
                 {card.trend}
               </div>
@@ -111,15 +111,15 @@ const Dashboard = () => {
             <div className="divide-y divide-slate-50 ">
               {activities.map((activity)=>(
                   <div key = {activity._id} className="flex items-start gap-4 px-6 py-4
-                  hover:bg-slate-50/50 transition-colors">
-                  <div className="size-9 rouned-xl flex items-center justify-center shrink-0
-                  mt-0.5 bg-zinc-100 text-zinc-600">
+                  hover:bg-indigo-50/50 transition-colors">
+                  <div className="size-9 rounded-xl flex items-center justify-center shrink-0
+                  mt-0.5 bg-indigo-50 text-indigo-500">
                      <SendIcon className="size-4"/>
                   </div>
                      <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2 mb-1">
-                              <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-100 
-                              text-zinc-600">Published</span>
+                              <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-50 
+                              text-indigo-600">Published</span>
                               <span className="text-xs text-slate-400 shrink-0">{new Date(activity.
                                 createdAt).toLocaleString()}</span>
                         </div>
