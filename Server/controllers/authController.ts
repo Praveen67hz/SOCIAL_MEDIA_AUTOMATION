@@ -49,7 +49,7 @@ Promise<void>=>{
         const {email, password} = req.body;
         const user = await User.findOne({email})
         if(user && (await bcrypt.compare(password,user.password))){
-            res.json({_id: user._id , email: user.email, token: generateToken(user._id.toString())})
+            res.json({_id: user._id , email: user.email, name: user.name ,token: generateToken(user._id.toString())})
             return;
         }
         else{
