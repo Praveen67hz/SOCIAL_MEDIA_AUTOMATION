@@ -1,6 +1,8 @@
 import {  useEffect, useState } from "react"
-import { dummyGenerationData, PLATFORMS } from "../assets/assets";
-import { ArrowRightIcon, CalendarIcon, ClockIcon, HistoryIcon, Loader2Icon, TimerIcon, Wand2Icon, XIcon } from "lucide-react";
+import { PLATFORMS } from "../assets/assets";
+import { ArrowRightIcon,  CalendarIcon, ClockIcon, HistoryIcon, Loader2Icon, TimerIcon, Wand2Icon, XIcon } from "lucide-react";
+import api from "../api/axios";
+import toast from "react-hot-toast";
 
 const AiComposer = () => {
 
@@ -18,7 +20,12 @@ const AiComposer = () => {
   const[scheduling,setScheduling] = useState(false);
 
   const fetchGenerations = async() =>{
-       setGenerations(dummyGenerationData)
+     try {
+       const {data} = await api.get("/api/posts/generations")
+       setGenerations(data)
+     } catch (error: any) {
+        toast.error(error?.response?.data?.message || error?.message);
+     }
   }
 
   useEffect(()=>{
@@ -26,18 +33,57 @@ const AiComposer = () => {
   },[])
 
   const handleGenerate = async() =>{
+    if(!prompt){
+      toast.error("Please enter a prompt")
+      return;
+    }
     setLoading(true)
-    setTimeout(()=>{
+    try {
+      const { data } = await api.post("/api/posts/generate", {prompt,tone,generateImage});
+      console.log(data)
+      setGenerations([data, ...generations])
+      setActiveScheduler(data)
+      toast.success("Content Generated!")
+     }catch (error: any) {
+         toast.error(error?.response?.data?.message || error?.message);
+     }finally{
       setLoading(false)
-    },2000)
+     }
   }
 
-  const handleSchedule = async() =>{
-     setScheduling(true)
-    setTimeout(()=>{
-      setScheduling(false)
-    },2000)
-  }
+  const handleSchedule = async () =>{
+     if(!activeScheduler) return;
+     if(selectedPlatforms.length === 0){
+      toast.error("Select at least one platform");
+      return;
+     }
+     if(!scheduledDate || !scheduledTime){
+      toast.error("Select data and time");
+      return;
+     }
+      const scheduledFor = new Date(`${scheduledDate}T${scheduledTime}`).toISOString();
+      setScheduling(true);
+      try {
+        await api.post("/api/posts",  {
+          content: activeScheduler.content,
+          mediaUrl: activeScheduler.mediaUrl,
+          mediaType: activeScheduler.mediType,
+          platforms: selectedPlatforms,
+          scheduledFor,
+          status: "scheduled",
+        });
+
+          toast.success(" AI Post scheduled!");
+          setActiveScheduler("");
+          setSelectedPlatforms([]);
+          setScheduledDate("");
+          setScheduledTime("");
+      } catch (error: any) {
+        toast.error(error?.response?.data?.message || "Failed to schedule");
+      } finally {
+         setScheduling(false);
+      }
+        }
 
   const tones = ["Professional","Creative","Funny","Minimalist","Excited"];
 

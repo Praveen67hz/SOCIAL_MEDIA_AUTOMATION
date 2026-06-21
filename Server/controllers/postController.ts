@@ -49,49 +49,29 @@ export const generatePost = async (req: AuthRequest, res: Response): Promise<voi
         let mediaUrl = "";
         let mediaType: "image" | "video" | undefined = undefined;
 
-        // 3. Generate Image if toggle is ON (Hugging Face)
+        // 3. Generate Image if toggle is ON (Pollinations.ai)
         if (generateImage) {
             try {
-                const huggingFaceKey = process.env.HUGGINGFACE_API_KEY;
-                if (!huggingFaceKey) {
-                    console.warn("Hugging Face API Key is missing. Skipping image generation.");
-                } else {
-                    // Call Hugging Face API 
-                    const hfResponse = await axios.post(
-                        "https://api-inference.huggingface.co/models/runwayml/stable-diffusion-v1-5",
-                        {
-                            inputs: imagePrompt,
-                            parameters: {
-                                negative_prompt: "blurry, ugly, low quality, deformed",
-                                num_inference_steps: 30,
-                                guidance_scale: 7.5,
-                            }
-                        },
-                        {
-                            headers: {
-                                Authorization: `Bearer ${huggingFaceKey}`,
-                                "Content-Type": "application/json",
-                            },
-                            responseType: "arraybuffer",
-                        }
-                    );
+                // ✅ REPLACED: Hugging Face → Pollinations.ai
+                const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(imagePrompt)}?width=1024&height=1024&nologo=true`;
+                
+                const imageResponse = await axios.get(imageUrl, {
+                    responseType: "arraybuffer",
+                });
 
-                    // Convert image buffer to base64 for Cloudinary upload
-                    const imageBuffer = Buffer.from(hfResponse.data);
-                    const base64Image = `data:image/png;base64,${imageBuffer.toString('base64')}`;
+                const imageBuffer = Buffer.from(imageResponse.data);
+                const base64Image = `data:image/png;base64,${imageBuffer.toString('base64')}`;
 
-                    // Upload to Cloudinary for persistence
-                    const uploadResult = await cloudinary.uploader.upload(base64Image, {
-                        folder: "ai-generations",
-                        resource_type: "image",
-                    });
+                const uploadResult = await cloudinary.uploader.upload(base64Image, {
+                    folder: "ai-generations",
+                    resource_type: "image",
+                });
 
-                    mediaUrl = uploadResult.secure_url;
-                    mediaType = "image";
-                }
+                mediaUrl = uploadResult.secure_url;
+                mediaType = "image";
             } catch (err: any) {
                 console.error("Image generation failed:", err?.response?.data || err.message);
-                // Continue without image (don't fail the whole request)
+                // Continue without image
             }
         }
 
@@ -147,6 +127,18 @@ export const getPosts = async (req: AuthRequest, res: Response): Promise<void> =
 export const schedulePost = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const { content, platforms, scheduledFor, status } = req.body;
+
+        // Validate platforms
+        if (!platforms || platforms.length === 0) {
+            res.status(400).json({ message: "At least one platform is required" });
+            return;
+        }
+
+        // Validate scheduledFor
+        if (!scheduledFor) {
+            res.status(400).json({ message: "Scheduled date is required" });
+            return;
+        }
 
         // Parse platforms if it comes as a stringified array from FormData
         let parsedPlatforms = platforms;

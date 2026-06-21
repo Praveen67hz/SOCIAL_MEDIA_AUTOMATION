@@ -23,8 +23,13 @@ export const initScheduler = ()=>{
                         console.log(`No connected Zernio accounts found for post ${post._id}`);
                         continue;
                     }
+                    // ✅ ADD THIS CHECK
+                    if (!post.platforms || post.platforms.length === 0) {
+                        console.log(`⚠️ No platforms specified for post ${post._id}`);
+                        continue;
+                    }
                     const zernioPlatforms = accounts.map((acc)=>({
-                          tform: acc.platform as any,
+                          platform: acc.platform as any,
                           accountId: acc.zernioAccountId!
                     }))
 
@@ -56,7 +61,7 @@ export const initScheduler = ()=>{
                     await ActivityLog.create({
                         user: post.user,
                         actionType: "POST_PUBLISHED",
-                        description: `Published post to ${accounts.map}`
+                        description: `Published post to ${accounts.map(a => a.platform).join(", ")}`
                     })
                 } catch (err: any) {
                     console.error(`Failed to publish post ${post._id} :`, err?.response?.data || err?.message);
