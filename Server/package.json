@@ -5,7 +5,7 @@
   "scripts": {
     "start": "tsx server.ts",
     "server": "nodemon --exec tsx server.ts",
-    "buiid": "tsc"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
